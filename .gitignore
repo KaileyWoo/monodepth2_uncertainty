@@ -1,0 +1,8 @@
+*.pyc
+*_disp.jpg
+*_disp.npy
+*.npz
+*.xlsm
+__pycache__
+
+

@@ -1,0 +1,67 @@
+python train.py --model_name mono_model --data_path F:\Datasets\kitti_raw_eigen --log_dir ./tmp/test_model/
+
+
+CUDA_VISIBLE_DEVICES=0 python train.py --model_name mono_model --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/
+CUDA_VISIBLE_DEVICES=0 python my_train.py --model_name mono_model --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/
+CUDA_VISIBLE_DEVICES=0 python my_train_boot.py --model_name mono_model --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/boots_train
+
+CUDA_VISIBLE_DEVICES=0 python train.py --model_name mono_model --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/test_model/ --dropout --log
+
+训练Self方法：
+CUDA_VISIBLE_DEVICES=0 python my_train_self.py --model_name self_mono_model --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/
+
+FOD实验训练
+CUDA_VISIBLE_DEVICES=0 python train.py --model_name FOD_model_finetu --data_path ~/Mount_E_document/Datasets/FOD_experiment/ --log_dir ./tmp/ --load_weights_folder ./tmp/Baseline_A/models/weights_19  --split mysplit --dataset mydata
+CUDA_VISIBLE_DEVICES=0 python my_train_self.py --model_name FOD_model --data_path ~/Mount_E_document/Datasets/FOD_experiment/ --log_dir ./tmp/ --split mysplit --dataset mydata --load_weights_folder ./tmp/FOD_test/models/weights_3
+python my_test_simple.py --model_path ./tmp/FOD_model/models/weights_19/ --model_name FOD_model --ext jpg --image_path assets/FOD --do_monodepth2
+python my_test_simple.py --model_path ./tmp/FOD_model_finetu/models/weights_19/ --model_name FOD_model_finetu --ext jpg --image_path assets/FOD --do_uncert
+
+
+
+// Finetuning a pretrained model
+CUDA_VISIBLE_DEVICES=0 python train.py --model_name finetuned_mono --load_weights_folder ./tmp/model_TS_batch7_sourceScale/mono_model/models/weights_19 --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --log_dir ./tmp/test_model/ --dropout --log
+
+
+python evaluate_depth.py --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --eval_mono --load_weights_folder ./tmp/mono_model/models/weights_19/
+python my_evaluate.py --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --eval_mono --load_weights_folder ./tmp/mono_model/models/weights_19/ --post_process
+估计evaluate时不可使用随机获得dataset
+python my_evaluate.py --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --eval_mono --load_weights_folder ./tmp/self_mono_model/models/weights_19/ --max_depth 80 --eval_split eigen_benchmark --post_process
+python my_evaluate.py --data_path ../../Datasets/kitti_raw_eigen/ --eval_mono --load_weights_folder ./tmp/Baseline/models/weights_19/ --max_depth 80 --eval_split eigen_benchmark --post_process
+
+
+python test_simple.py --image_path assets/test_image.jpg --model_name mono_640x192
+python test_simple.py --model_path ./tmp/model_fullData_1026/models/weights_19/ --no_TS --image_path assets/test_image.jpg
+python test_simple.py --model_path ./tmp/mono_model/models/weights_19/ --image_path assets/jpg/test_image.jpg
+
+python my_test_simple.py --model_path ./tmp/BT_A_S/models/weights_19/ --model_name BT_A_S --ext jpg --image_path assets/FOD --do_uncert
+python my_test_simple.py --model_path ./tmp/mono_model/models/weights_19/ --model_name mono_model --ext jpg --image_path assets/jpg --do_uncert
+python my_test_simple.py --model_path ./tmp/mono_model/models/weights_19/ --model_name mono_model --ext png --image_path assets/png --do_uncert
+python my_test_simple.py --model_path ./tmp/model_partData_batch12/mono_model/models/weights_19/ --model_name model_partData_batch12 --ext jpg --image_path assets/jpg --do_monodepth2
+python my_test_simple.py --model_path ./tmp/model_partData_batch12/mono_model/models/weights_19/ --model_name model_partData_batch12 --ext png --image_path assets/png --do_monodepth2
+python my_test_simple.py --model_path ./tmp/model_fullData_1026/models/weights_19/ --model_name model_fullData_1026 --ext jpg --image_path assets/jpg --do_monodepth2
+python my_test_simple.py --model_path ./tmp/model_fullData_1026/models/weights_19/ --model_name model_fullData_1026 --ext png --image_path assets/png --do_monodepth2
+
+
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$
+python my_test_simple.py --model_path ./tmp/Baseline/models/weights_19/ --model_name Baseline --ext jpg --image_path assets/jpg --do_monodepth2
+python my_test_simple.py --model_path ./tmp/BT_A/models/weights_19/ --model_name BT_A --ext jpg --image_path assets/jpg --do_uncert
+python my_test_simple.py --model_path ./tmp/BT_A_S/models/weights_19/ --model_name BT_A_S --ext jpg --image_path assets/jpg --do_uncert
+
+
+
+
+
+conda activate monodepth2
+
+sudo mount -t ntfs /dev/sda6 /home/wsy/Mount_E_document/
+sudo mount -t ntfs /dev/sda1 /home/wsy/Mount_D_work/
+
+tensorboard --logdir=./tmp/mono_model/train/
+
+python export_gt_depth.py --data_path ~/Mount_E_document/Datasets/kitti_raw_eigen/ --split eigen_benchmark
+
+
+
+
+
