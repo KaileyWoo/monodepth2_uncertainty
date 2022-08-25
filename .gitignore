@@ -4,5 +4,8 @@
 *.npz
 *.xlsm
 __pycache__
+assets
+models
+tmp_models
 
 
